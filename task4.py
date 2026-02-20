@@ -33,6 +33,7 @@ def display_info(contacts):
         return "Contacts list is empty"
     
     return [f"{name}: {phone}" for name,phone in contacts.items()]
+    
 @input_error
 def parse_input(user_input):
     cmd, *args = user_input.split()
