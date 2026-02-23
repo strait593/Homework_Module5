@@ -1,5 +1,3 @@
-contacts = {}
-
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -16,16 +14,20 @@ def input_error(func):
 @input_error
 def add_contact(args, contacts):
     name, phone = args
-    contacts['name'] = name
-    contacts['phone'] = phone
+    contacts[name] = phone
 
     return "Contact added"
 
 @input_error
-def get_phone_number(args, contacts):
-    name = args[0]
+def change_contact(args, contacts):
+    name, phone = args
 
-    return f"{name}: {contacts['name']}"
+    if name not in contacts:
+        raise KeyError
+
+    contacts[name] = phone
+
+    return "Contact updated"
 
 @input_error
 def display_info(contacts):
@@ -33,6 +35,12 @@ def display_info(contacts):
         return "Contacts list is empty"
     
     return [f"{name}: {phone}" for name,phone in contacts.items()]
+
+@input_error
+def show_phone(args,contacts):
+   name = args[0]
+
+   return contacts[name]
     
 @input_error
 def parse_input(user_input):
@@ -42,8 +50,8 @@ def parse_input(user_input):
 
 @input_error
 def main():
+
     contacts = {}
-    
     while True:
         user_input = input("Enter a command: ")
         command, args = parse_input(user_input)
@@ -56,12 +64,11 @@ def main():
         elif command == "add":
             print(add_contact(args, contacts))
         elif command == "phone":
-            print(get_phone_number(args, contacts))
+            print(show_phone(args,contacts))
         elif command == "all":
             print(display_info(contacts))
-        elif command == "finish":
-            print("Thank you for your time, bye.")
-            break
+        elif command == "change":
+            print(change_contact(args, contacts))
         else:
             print("Invalid command.")
 
