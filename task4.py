@@ -54,6 +54,9 @@ def main():
     contacts = {}
     while True:
         user_input = input("Enter a command: ")
+        if not user_input:
+            continue
+        
         command, args = parse_input(user_input)
 
         if command in ["close", "exit"]:
